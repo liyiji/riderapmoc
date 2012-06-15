@@ -1,6 +1,34 @@
 
 #include "CDPublic.h"
 
+void debugUnequal(Unequal ueq)
+{
+    qDebug() << ueq.m_sDir1 << ueq.m_sDir2 << ueq.m_sFileOrDirName;
+    if (ueq.m_eEntryType == FOLDERS)
+    {
+        qDebug() << "FOLDERS";
+    }
+    else if (ueq.m_eEntryType == FILES)
+    {
+        qDebug() << "FILES";
+    }
+
+    if (ueq.m_eUnequalType == SIZE_UNEQUAL)
+    {
+        qDebug() << "SIZE_UNEQUAL";
+    }
+    else if (ueq.m_eUnequalType == ONLY_IN_DIR_1)
+    {
+        qDebug() << "ONLY_IN_DIR_1";
+    }
+    else if (ueq.m_eUnequalType == ONLY_IN_DIR_2)
+    {
+        qDebug() << "ONLY_IN_DIR_2";
+    }
+
+    qDebug();
+}
+
 bool compareDir(QString strDir1, QString strDir2,
                 QList<Unequal> &unequalList)
 {
@@ -24,8 +52,11 @@ bool compareDir(QString strDir1, QString strDir2,
         ueq.m_sDir1 = dir1.absolutePath();
         ueq.m_sDir2 = dir2.absolutePath();
         ueq.m_sFileOrDirName = dirList1Only[i];
-        ueq.m_eEntryType = DIRECTORIES;
-        ueq.m_eUnequalType = NOT_IN_DIR_2;
+        ueq.m_eEntryType = FOLDERS;
+        ueq.m_eUnequalType = ONLY_IN_DIR_1;
+        QString dirName = ueq.m_sDir1 + QDir::separator() + ueq.m_sFileOrDirName;
+        ueq.m_iSize1 = calculateDirSize(dirName);
+        ueq.m_iSize2 = 0;
 
         unequalList.append(ueq);
     }
@@ -35,8 +66,12 @@ bool compareDir(QString strDir1, QString strDir2,
         ueq.m_sDir1 = dir1.absolutePath();
         ueq.m_sDir2 = dir2.absolutePath();
         ueq.m_sFileOrDirName = dirList2Only[i];
-        ueq.m_eEntryType = DIRECTORIES;
-        ueq.m_eUnequalType = NOT_IN_DIR_1;
+        ueq.m_eEntryType = FOLDERS;
+        ueq.m_eUnequalType = ONLY_IN_DIR_2;
+        QString dirName = ueq.m_sDir2 + QDir::separator() + ueq.m_sFileOrDirName;
+        ueq.m_iSize1 = 0;
+        ueq.m_iSize2 = calculateDirSize(dirName);
+
 
         unequalList.append(ueq);
     }
@@ -50,8 +85,10 @@ bool compareDir(QString strDir1, QString strDir2,
             ueq.m_sDir1 = dir1.absolutePath();
             ueq.m_sDir2 = dir2.absolutePath();
             ueq.m_sFileOrDirName = dirCommon[i];
-            ueq.m_eEntryType = DIRECTORIES;
+            ueq.m_eEntryType = FOLDERS;
             ueq.m_eUnequalType = SIZE_UNEQUAL;
+            ueq.m_iSize1 = dirSize1;
+            ueq.m_iSize2 = dirSize2;
 
             unequalList.append(ueq);
         }
@@ -126,7 +163,10 @@ bool compareFiles(QDir dir1, QDir dir2,
         ueq.m_sDir2 = dir2.absolutePath();
         ueq.m_sFileOrDirName = fileList1Only[i];
         ueq.m_eEntryType = FILES;
-        ueq.m_eUnequalType = NOT_IN_DIR_2;
+        ueq.m_eUnequalType = ONLY_IN_DIR_1;
+        QFile f(ueq.m_sDir1 + QDir::separator() + ueq.m_sFileOrDirName);
+        ueq.m_iSize1 = f.size();
+        ueq.m_iSize2 = 0;
 
         unequalList.append(ueq);
     }
@@ -137,7 +177,10 @@ bool compareFiles(QDir dir1, QDir dir2,
         ueq.m_sDir2 = dir2.absolutePath();
         ueq.m_sFileOrDirName = fileList2Only[i];
         ueq.m_eEntryType = FILES;
-        ueq.m_eUnequalType = NOT_IN_DIR_1;
+        ueq.m_eUnequalType = ONLY_IN_DIR_2;
+        QFile f(ueq.m_sDir2 + QDir::separator() + ueq.m_sFileOrDirName);
+        ueq.m_iSize1 = 0;
+        ueq.m_iSize2 = f.size();
 
         unequalList.append(ueq);
     }
@@ -149,39 +192,15 @@ bool compareFiles(QDir dir1, QDir dir2,
         ueq.m_sFileOrDirName = commonButUnequal[i];
         ueq.m_eEntryType = FILES;
         ueq.m_eUnequalType = SIZE_UNEQUAL;
+        QFile f1(ueq.m_sDir1 + QDir::separator() + ueq.m_sFileOrDirName);
+        QFile f2(ueq.m_sDir2 + QDir::separator() + ueq.m_sFileOrDirName);
+        ueq.m_iSize1 = f1.size();
+        ueq.m_iSize2 = f2.size();
 
         unequalList.append(ueq);
     }
 
     return true;
-}
-
-void debugUnequal(Unequal ueq)
-{
-    qDebug() << ueq.m_sDir1 << ueq.m_sDir2 << ueq.m_sFileOrDirName;
-    if (ueq.m_eEntryType == 0)
-    {
-        qDebug() << "Directories";
-    }
-    else if (ueq.m_eEntryType == 1)
-    {
-        qDebug() << "Files";
-    }
-
-    if (ueq.m_eUnequalType == 0)
-    {
-        qDebug() << "Size_Unequal";
-    }
-    else if (ueq.m_eUnequalType == 1)
-    {
-        qDebug() << "Not_In_Dir_1";
-    }
-    else if (ueq.m_eUnequalType == 2)
-    {
-        qDebug() << "Not_In_Dir_2";
-    }
-
-    qDebug() << endl;
 }
 
 qint64 calculateDirSize(QString dirName)

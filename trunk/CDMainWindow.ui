@@ -24,7 +24,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="toolButton">
@@ -45,7 +49,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="lineEdit_2">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QToolButton" name="toolButton_2">
@@ -73,10 +81,10 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="6">
-    <widget class="QTableWidget" name="tableWidget"/>
+    <widget class="CDTableWidget" name="tableWidget"/>
    </item>
    <item row="3" column="0" colspan="6">
-    <widget class="QTableWidget" name="tableWidget_2"/>
+    <widget class="CDTableWidget" name="tableWidget_2"/>
    </item>
    <item row="4" column="0">
     <widget class="QPushButton" name="pushButton">
@@ -195,6 +203,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CDTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>CDTableWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

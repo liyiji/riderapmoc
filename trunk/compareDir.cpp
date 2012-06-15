@@ -1,7 +1,7 @@
 
 #include <QApplication>
 
-#include <CDMainWindow.h>
+#include "CDMainWindow.h"
 
 int main(int argc, char *argv[])
 {

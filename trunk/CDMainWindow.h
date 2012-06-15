@@ -21,13 +21,14 @@ private:
     void initUi();
     void initConnections();
 
-    void showUnequals(QList<Unequal> unequalList);
-
 private slots:
     void slotChangeDir1();
     void slotChangeDir2();
     void slotStartCompare();
     void slotPause();
+
+    void slotCdDir1SubDir(QString subDirName);
+    void slotCdDir2SubDir(QString subDirName);
 
 private:
     Ui::CDMainWindow *ui;
