@@ -39,8 +39,11 @@ void CDMainWindow::initConnections()
     connect(ui->tableWidget, SIGNAL(cdToSubDir(QString)), this, SLOT(slotCdDir1SubDir(QString)));
     connect(ui->tableWidget_2, SIGNAL(cdToSubDir(QString)), this, SLOT(slotCdDir2SubDir(QString)));
 
-    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget, SLOT(resizeTable()));
-    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget_2, SLOT(resizeTable()));
+    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget, SLOT(slotResizeTable()));
+    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget_2, SLOT(slotResizeTable()));
+
+    connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(slotCdDir1ParentDir()));
+    connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(slotCdDir2ParentDir()));
 }
 
 void CDMainWindow::slotChangeDir1()
@@ -123,4 +126,20 @@ void CDMainWindow::slotCdDir2SubDir(QString subDirName)
         ui->lineEdit_2->setText(fullSubDirName);
         ui->tableWidget_2->setAllItemTextColorToGray();
     }
+}
+
+void CDMainWindow::slotCdDir1ParentDir()
+{
+    QDir dir(ui->lineEdit->text());
+    dir.cdUp();
+    ui->lineEdit->setText(dir.absolutePath());
+    ui->tableWidget->setAllItemTextColorToGray();
+}
+
+void CDMainWindow::slotCdDir2ParentDir()
+{
+    QDir dir(ui->lineEdit_2->text());
+    dir.cdUp();
+    ui->lineEdit_2->setText(dir.absolutePath());
+    ui->tableWidget_2->setAllItemTextColorToGray();
 }
