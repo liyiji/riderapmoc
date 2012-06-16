@@ -43,7 +43,7 @@ CDTableWidget::CDTableWidget(QWidget *parent) : QTableWidget(parent)
     setSelectionMode(QAbstractItemView::SingleSelection);
 
     /// 每列宽度、每行高度自动设置为合适的大小
-    resizeTable();
+    slotResizeTable();
 
     initConnections();
 }
@@ -139,7 +139,7 @@ void CDTableWidget::showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalLis
         delete []pItem;
     }
 
-    resizeTable();
+    slotResizeTable();
 }
 
 void CDTableWidget::setAllItemTextColorToGray()
@@ -159,7 +159,7 @@ void CDTableWidget::setAllItemTextColor(QColor c)
     }
 }
 
-void CDTableWidget::resizeTable()
+void CDTableWidget::slotResizeTable()
 {
     /// 注意，这两个是有顺序的
     resizeColumnsToContents();

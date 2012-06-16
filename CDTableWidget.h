@@ -23,7 +23,7 @@ public:
     void setAllItemTextColor(QColor c = Qt::gray);
 
 public slots:
-    void resizeTable();
+    void slotResizeTable();
 
 private:
     void initConnections();
