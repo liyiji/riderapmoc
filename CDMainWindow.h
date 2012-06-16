@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include <CDPublic.h>
+#include "CDPublic.h"
 
 namespace Ui {
     class CDMainWindow;
@@ -25,7 +25,6 @@ private slots:
     void slotChangeDir1();
     void slotChangeDir2();
     void slotStartCompare();
-    void slotPause();
 
     void slotCdDir1SubDir(QString subDirName);
     void slotCdDir2SubDir(QString subDirName);
