@@ -42,4 +42,6 @@ qint64 calculateDirSize(QString dirName);
 void separateDiffences(QStringList stl1, QStringList stl2,
                        QStringList &stl1Only, QStringList &stl2Only, QStringList &stlCommon);
 
+QString getScientificNotationOfQInt64(qint64 num);
+
 #endif // CDPUBLIC_H

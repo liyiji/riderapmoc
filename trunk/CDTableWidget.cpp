@@ -1,7 +1,9 @@
 
 #include "CDTableWidget.h"
 
+#include <QContextMenuEvent>
 #include <QHeaderView>
+#include <QMenu>
 
 /**
   Folder / File     /// 文件夹 / 文件
@@ -41,8 +43,7 @@ CDTableWidget::CDTableWidget(QWidget *parent) : QTableWidget(parent)
     setSelectionMode(QAbstractItemView::SingleSelection);
 
     /// 每列宽度、每行高度自动设置为合适的大小
-    resizeColumnsToContents();
-    resizeRowsToContents();
+    resizeTable();
 
     initConnections();
 }
@@ -114,12 +115,12 @@ void CDTableWidget::showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalLis
         {
         case 1:
             {
-                pItem[3]->setText(QString::number(ueq.m_iSize1));
+                pItem[3]->setText(getScientificNotationOfQInt64(ueq.m_iSize1));
                 break;
             }
         case 2:
             {
-                pItem[3]->setText(QString::number(ueq.m_iSize2));
+                pItem[3]->setText(getScientificNotationOfQInt64(ueq.m_iSize2));
                 break;
             }
         default:
@@ -127,6 +128,7 @@ void CDTableWidget::showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalLis
                 break;
             }
         }
+        pItem[3]->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
         insertRow(0);
         for (int iColumn = 0; iColumn < m_slHeaderLabels.size(); iColumn++)
@@ -137,8 +139,12 @@ void CDTableWidget::showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalLis
         delete []pItem;
     }
 
-    resizeColumnsToContents();
-    resizeRowsToContents();
+    resizeTable();
+}
+
+void CDTableWidget::setAllItemTextColorToGray()
+{
+    setAllItemTextColor(Qt::gray);
 }
 
 void CDTableWidget::setAllItemTextColor(QColor c)
@@ -153,13 +159,41 @@ void CDTableWidget::setAllItemTextColor(QColor c)
     }
 }
 
-void CDTableWidget::initConnections()
+void CDTableWidget::resizeTable()
 {
-    connect(this, SIGNAL(itemDoubleClicked(QTableWidgetItem*)),
-            this, SLOT(slotItemDoubleClicked(QTableWidgetItem*)));
+    /// 注意，这两个是有顺序的
+    resizeColumnsToContents();
+    resizeRowsToContents();
 }
 
-void CDTableWidget::slotItemDoubleClicked(QTableWidgetItem *pItem)
+void CDTableWidget::initConnections()
+{
+}
+
+void CDTableWidget::contextMenuEvent(QContextMenuEvent *e)
+{
+    QTableWidgetItem *pItem = itemAt(e->pos());
+
+    if (pItem)
+    {
+        int iRow = pItem->row();
+        QStringList itemTexts;
+        for (int iColumn = 0; iColumn < columnCount(); iColumn++)
+        {
+            itemTexts.append(item(iRow, iColumn)->text());
+        }
+        if (itemTexts[0] != "Folder")
+        {
+            return;
+        }
+
+        QMenu menu(this);
+        menu.addAction("Change into this folder", this, SLOT(slotEmitCdToSubDirOfCurrentItem()));
+        menu.exec(QCursor::pos());
+    }
+}
+
+void CDTableWidget::ChangeIntoSubDirByItem(QTableWidgetItem *pItem)
 {
     if (pItem == 0)
     {
@@ -180,4 +214,13 @@ void CDTableWidget::slotItemDoubleClicked(QTableWidgetItem *pItem)
 
     QString subDirName = itemTexts[2];
     emit cdToSubDir(subDirName);
+}
+
+void CDTableWidget::slotEmitCdToSubDirOfCurrentItem()
+{
+    QTableWidgetItem *pItem = currentItem();
+    if (pItem)
+    {
+        ChangeIntoSubDirByItem(pItem);
+    }
 }

@@ -2,7 +2,6 @@
 #include "CDMainWindow.h"
 #include "ui_CDMainWindow.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QFileDialog>
 
@@ -26,7 +25,6 @@ void CDMainWindow::initUi()
     ui->lineEdit_2->clear();
 
     ui->pushButton->setEnabled(false);
-    ui->pushButton_2->setEnabled(false);
 
     ui->label_3->setVisible(false);
     ui->label_4->setVisible(false);
@@ -37,10 +35,12 @@ void CDMainWindow::initConnections()
     connect(ui->toolButton, SIGNAL(clicked()), this, SLOT(slotChangeDir1()));
     connect(ui->toolButton_2, SIGNAL(clicked()), this, SLOT(slotChangeDir2()));
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(slotStartCompare()));
-    connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(slotPause()));
 
     connect(ui->tableWidget, SIGNAL(cdToSubDir(QString)), this, SLOT(slotCdDir1SubDir(QString)));
     connect(ui->tableWidget_2, SIGNAL(cdToSubDir(QString)), this, SLOT(slotCdDir2SubDir(QString)));
+
+    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget, SLOT(resizeTable()));
+    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget_2, SLOT(resizeTable()));
 }
 
 void CDMainWindow::slotChangeDir1()
@@ -50,6 +50,11 @@ void CDMainWindow::slotChangeDir1()
                                                         ui->lineEdit->text());
     if (dirName.isEmpty() == false)
     {
+        QString oldDirName = ui->lineEdit->text();
+        if (oldDirName != dirName)
+        {
+            ui->tableWidget->setAllItemTextColorToGray();
+        }
         ui->lineEdit->setText(dirName);
         if (ui->lineEdit->text().isEmpty() == false && ui->lineEdit_2->text().isEmpty() == false)
         {
@@ -65,6 +70,11 @@ void CDMainWindow::slotChangeDir2()
                                                         ui->lineEdit_2->text());
     if (dirName.isEmpty() == false)
     {
+        QString oldDirName = ui->lineEdit_2->text();
+        if (oldDirName != dirName)
+        {
+            ui->tableWidget_2->setAllItemTextColorToGray();
+        }
         ui->lineEdit_2->setText(dirName);
         if (ui->lineEdit->text().isEmpty() == false && ui->lineEdit_2->text().isEmpty() == false)
         {
@@ -91,11 +101,6 @@ void CDMainWindow::slotStartCompare()
     ui->label_4->setVisible(true);
 }
 
-void CDMainWindow::slotPause()
-{
-    /// TODO :
-}
-
 void CDMainWindow::slotCdDir1SubDir(QString subDirName)
 {
     QString dir1Name = ui->lineEdit->text();
@@ -104,7 +109,7 @@ void CDMainWindow::slotCdDir1SubDir(QString subDirName)
     if (dir.exists())
     {
         ui->lineEdit->setText(fullSubDirName);
-        ui->tableWidget->setAllItemTextColor(Qt::gray);
+        ui->tableWidget->setAllItemTextColorToGray();
     }
 }
 
@@ -116,6 +121,6 @@ void CDMainWindow::slotCdDir2SubDir(QString subDirName)
     if (dir.exists())
     {
         ui->lineEdit_2->setText(fullSubDirName);
-        ui->tableWidget_2->setAllItemTextColor(Qt::gray);
+        ui->tableWidget_2->setAllItemTextColorToGray();
     }
 }

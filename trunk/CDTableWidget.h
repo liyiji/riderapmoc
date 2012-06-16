@@ -14,19 +14,25 @@ public:
     CDTableWidget(QWidget *parent = 0);
     virtual ~CDTableWidget();
 
-public:
-    void showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalList);
-
-    void setAllItemTextColor(QColor c = Qt::gray);
-
 signals:
     void cdToSubDir(QString subDirName);
 
+public:
+    void showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalList);
+    void setAllItemTextColorToGray();
+    void setAllItemTextColor(QColor c = Qt::gray);
+
+public slots:
+    void resizeTable();
+
 private:
     void initConnections();
+    void ChangeIntoSubDirByItem(QTableWidgetItem *pItem);
+
+    virtual void contextMenuEvent(QContextMenuEvent *e);
 
 private slots:
-    void slotItemDoubleClicked(QTableWidgetItem *pItem);
+    void slotEmitCdToSubDirOfCurrentItem();
 
 private:
     static const QStringList m_slHeaderLabels;

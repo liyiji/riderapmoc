@@ -1,6 +1,8 @@
 
 #include "CDPublic.h"
 
+#include <QString>
+
 void debugUnequal(Unequal ueq)
 {
     qDebug() << ueq.m_sDir1 << ueq.m_sDir2 << ueq.m_sFileOrDirName;
@@ -270,4 +272,42 @@ void separateDiffences(QStringList stl1, QStringList stl2,
             }
         }
     }
+}
+
+QString getScientificNotationOfQInt64(qint64 num)
+{
+    QString str = QString::number(num);
+    int size = str.size();
+    int segmentSize = size / 3;
+    int firstSegmentSize = size - (segmentSize * 3);
+    if (firstSegmentSize == 0)
+    {
+        firstSegmentSize = 3;
+    }
+    QStringList stl;
+    stl.append(str.left(firstSegmentSize));
+    str.remove(0, firstSegmentSize);
+
+    for (int i = 0; ; i++)
+    {
+        if (str.size() < 3)
+        {
+            if (str.size() == 0)
+            {
+                break;
+            }
+            else
+            {
+                printf("If you can see this, it's means that the program is not stable, please contact developer.\nThe error code is 0\n");
+                fflush(0);
+                /// 我操出问题了！
+            }
+        }
+
+        stl.append(str.left(3));
+        str.remove(0, 3);
+    }
+
+    QString final = stl.join(",");
+    return final;
 }
