@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>495</width>
-    <height>652</height>
+    <width>788</width>
+    <height>832</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -238,6 +238,18 @@ compare</string>
    <header>CDTableWidget.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>toolButton_2</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>pushButton_4</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>lineEdit_2</tabstop>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>tableWidget_2</tabstop>
+  <tabstop>checkBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

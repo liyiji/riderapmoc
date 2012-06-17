@@ -32,7 +32,7 @@ void CDMainWindow::initUi()
     ui->label_3->setVisible(false);
     ui->label_4->setVisible(false);
 
-    bool bDebug = false;
+    bool bDebug = true;
     if (bDebug)
     {
         ui->lineEdit->setText("D:\\SkyDrive");
