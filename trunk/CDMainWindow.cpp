@@ -24,10 +24,21 @@ void CDMainWindow::initUi()
     ui->lineEdit->clear();
     ui->lineEdit_2->clear();
 
+    ui->pushButton_2->setEnabled(false);
+    ui->pushButton_4->setEnabled(false);
+
     ui->pushButton->setEnabled(false);
 
     ui->label_3->setVisible(false);
     ui->label_4->setVisible(false);
+
+    bool bDebug = true;
+    if (bDebug)
+    {
+        ui->lineEdit->setText("D:\\SkyDrive");
+        ui->lineEdit_2->setText("G:\\Ftp.Folder.For.Xlight");
+        ui->pushButton->setEnabled(true);
+    }
 }
 
 void CDMainWindow::initConnections()
@@ -59,9 +70,13 @@ void CDMainWindow::slotChangeDir1()
             ui->tableWidget->setAllItemTextColorToGray();
         }
         ui->lineEdit->setText(dirName);
-        if (ui->lineEdit->text().isEmpty() == false && ui->lineEdit_2->text().isEmpty() == false)
+        if (ui->lineEdit->text().isEmpty() == false)
         {
-            ui->pushButton->setEnabled(true);
+            ui->pushButton_2->setEnabled(true);
+            if (ui->lineEdit_2->text().isEmpty() == false)
+            {
+                ui->pushButton->setEnabled(true);
+            }
         }
     }
 }
@@ -79,9 +94,13 @@ void CDMainWindow::slotChangeDir2()
             ui->tableWidget_2->setAllItemTextColorToGray();
         }
         ui->lineEdit_2->setText(dirName);
-        if (ui->lineEdit->text().isEmpty() == false && ui->lineEdit_2->text().isEmpty() == false)
+        if (ui->lineEdit_2->text().isEmpty() == false)
         {
-            ui->pushButton->setEnabled(true);
+            ui->pushButton_4->setEnabled(true);
+            if (ui->lineEdit->text().isEmpty() == false)
+            {
+                ui->pushButton->setEnabled(true);
+            }
         }
     }
 }
