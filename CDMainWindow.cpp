@@ -2,7 +2,6 @@
 #include "CDMainWindow.h"
 #include "ui_CDMainWindow.h"
 
-#include <QFile>
 #include <QFileDialog>
 
 CDMainWindow::CDMainWindow(QWidget *parent) :
