@@ -141,6 +141,7 @@ void CDTableWidget::showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalLis
     }
 
     slotResizeTable();
+    slotSetDifferentBackgroundColorBetweenNearRow();
 }
 
 void CDTableWidget::setAllItemTextColorToGray()
@@ -165,6 +166,21 @@ void CDTableWidget::slotResizeTable()
     /// 注意，这两个是有顺序的
     resizeColumnsToContents();
     resizeRowsToContents();
+}
+
+void CDTableWidget::slotSetDifferentBackgroundColorBetweenNearRow()
+{
+    for (int i = 0; i < rowCount(); i++)
+    {
+        if (i % 2 != 0)
+        {
+            for (int j = 0; j < columnCount(); j++)
+            {
+                QTableWidgetItem *pItem = item(i, j);
+                pItem->setBackgroundColor(Qt::lightGray);
+            }
+        }
+    }
 }
 
 void CDTableWidget::initConnections()

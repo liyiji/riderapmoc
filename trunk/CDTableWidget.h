@@ -24,6 +24,7 @@ public:
 
 public slots:
     void slotResizeTable();
+    void slotSetDifferentBackgroundColorBetweenNearRow();
 
 private:
     void initConnections();
