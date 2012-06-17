@@ -32,7 +32,7 @@ void CDMainWindow::initUi()
     ui->label_3->setVisible(false);
     ui->label_4->setVisible(false);
 
-    bool bDebug = true;
+    bool bDebug = false;
     if (bDebug)
     {
         ui->lineEdit->setText("D:\\SkyDrive");
@@ -49,9 +49,6 @@ void CDMainWindow::initConnections()
 
     connect(ui->tableWidget, SIGNAL(cdToSubDir(QString)), this, SLOT(slotCdDir1SubDir(QString)));
     connect(ui->tableWidget_2, SIGNAL(cdToSubDir(QString)), this, SLOT(slotCdDir2SubDir(QString)));
-
-    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget, SLOT(slotResizeTable()));
-    connect(ui->pushButton_3, SIGNAL(clicked()), ui->tableWidget_2, SLOT(slotResizeTable()));
 
     connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(slotCdDir1ParentDir()));
     connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(slotCdDir2ParentDir()));
