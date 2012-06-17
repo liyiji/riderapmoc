@@ -134,13 +134,17 @@ bool compareFiles(QDir dir1, QDir dir2,
     for (int i = 0; i < fileList12Common.size(); i++)
     {
         QString name = fileList12Common[i];
-        QFile file1(dir1.absoluteFilePath(name));
-        QFile file2(dir2.absoluteFilePath(name));
-        bool b1 = file1.exists();
-        bool b2 = file2.exists();
+//        QFile file1(dir1.absoluteFilePath(name));
+//        QFile file2(dir2.absoluteFilePath(name));
+//        bool b1 = file1.exists();
+//        bool b2 = file2.exists();
+        QFileInfo fi1(dir1.absoluteFilePath(name));
+        QFileInfo fi2(dir2.absoluteFilePath(name));
+        bool b1 = fi1.exists();
+        bool b2 = fi2.exists();
         if (b1 && b2)
         {
-            if (file1.size() != file2.size())
+            if (fi1.size() != fi2.size())
             {
                 if (commonButUnequal.contains(name) == false)
                 {
@@ -166,7 +170,7 @@ bool compareFiles(QDir dir1, QDir dir2,
         ueq.m_sFileOrDirName = fileList1Only[i];
         ueq.m_eEntryType = FILES;
         ueq.m_eUnequalType = ONLY_IN_DIR_1;
-        QFile f(ueq.m_sDir1 + QDir::separator() + ueq.m_sFileOrDirName);
+        QFileInfo f(ueq.m_sDir1 + QDir::separator() + ueq.m_sFileOrDirName);
         ueq.m_iSize1 = f.size();
         ueq.m_iSize2 = 0;
 
@@ -180,7 +184,7 @@ bool compareFiles(QDir dir1, QDir dir2,
         ueq.m_sFileOrDirName = fileList2Only[i];
         ueq.m_eEntryType = FILES;
         ueq.m_eUnequalType = ONLY_IN_DIR_2;
-        QFile f(ueq.m_sDir2 + QDir::separator() + ueq.m_sFileOrDirName);
+        QFileInfo f(ueq.m_sDir2 + QDir::separator() + ueq.m_sFileOrDirName);
         ueq.m_iSize1 = 0;
         ueq.m_iSize2 = f.size();
 
@@ -194,8 +198,8 @@ bool compareFiles(QDir dir1, QDir dir2,
         ueq.m_sFileOrDirName = commonButUnequal[i];
         ueq.m_eEntryType = FILES;
         ueq.m_eUnequalType = SIZE_UNEQUAL;
-        QFile f1(ueq.m_sDir1 + QDir::separator() + ueq.m_sFileOrDirName);
-        QFile f2(ueq.m_sDir2 + QDir::separator() + ueq.m_sFileOrDirName);
+        QFileInfo f1(ueq.m_sDir1 + QDir::separator() + ueq.m_sFileOrDirName);
+        QFileInfo f2(ueq.m_sDir2 + QDir::separator() + ueq.m_sFileOrDirName);
         ueq.m_iSize1 = f1.size();
         ueq.m_iSize2 = f2.size();
 
