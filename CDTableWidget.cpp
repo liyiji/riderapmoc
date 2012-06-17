@@ -1,6 +1,7 @@
 
 #include "CDTableWidget.h"
 
+#include <QApplication>
 #include <QContextMenuEvent>
 #include <QHeaderView>
 #include <QMenu>
@@ -191,6 +192,13 @@ void CDTableWidget::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction("Change into this folder", this, SLOT(slotEmitCdToSubDirOfCurrentItem()));
         menu.exec(QCursor::pos());
     }
+}
+
+void CDTableWidget::paintEvent(QPaintEvent *e)
+{
+    slotResizeTable();
+
+    QTableWidget::paintEvent(e);
 }
 
 void CDTableWidget::ChangeIntoSubDirByItem(QTableWidgetItem *pItem)

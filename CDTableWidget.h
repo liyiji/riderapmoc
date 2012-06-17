@@ -30,6 +30,7 @@ private:
     void ChangeIntoSubDirByItem(QTableWidgetItem *pItem);
 
     virtual void contextMenuEvent(QContextMenuEvent *e);
+    virtual void paintEvent(QPaintEvent *e);
 
 private slots:
     void slotEmitCdToSubDirOfCurrentItem();
