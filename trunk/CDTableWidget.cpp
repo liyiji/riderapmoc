@@ -43,6 +43,8 @@ CDTableWidget::CDTableWidget(QWidget *parent) : QTableWidget(parent)
     /// 只能单选
     setSelectionMode(QAbstractItemView::SingleSelection);
 
+    setGridStyle(Qt::NoPen);
+
     /// 每列宽度、每行高度自动设置为合适的大小
     slotResizeTable();
 
@@ -163,13 +165,40 @@ void CDTableWidget::setAllItemTextColor(QColor c)
 
 void CDTableWidget::slotResizeTable()
 {
-    /// 注意，这两个是有顺序的
-    resizeColumnsToContents();
+    /// 先调整宽度
+    QVector<int> widths;
+    widths.resize(m_slHeaderLabels.size());
+    widths.fill(-1);
+    for (int i = 0; i < rowCount(); i++)
+    {
+        QTableWidgetItem *pItem = item(i, 0);
+        setCurrentItem(pItem);
+        resizeColumnsToContents();
+        for (int j = 0; j < m_slHeaderLabels.size(); j++)
+        {
+            if (widths[j] <= columnWidth(j))
+            {
+                widths[j] = columnWidth(j);
+            }
+        }
+    }
+
+    for (int i = 0; i < columnCount(); i++)
+    {
+        setColumnWidth(i, widths[i]);
+    }
+
+    /// 再调整高度
     resizeRowsToContents();
+
+    /// 最后设定显示的范围
+    setCurrentItem(item(-1, -1));
+    scrollToTop();
 }
 
 void CDTableWidget::slotSetDifferentBackgroundColorBetweenNearRow()
 {
+    QColor lightLightGray(240, 240, 240);
     for (int i = 0; i < rowCount(); i++)
     {
         if (i % 2 != 0)
@@ -177,7 +206,7 @@ void CDTableWidget::slotSetDifferentBackgroundColorBetweenNearRow()
             for (int j = 0; j < columnCount(); j++)
             {
                 QTableWidgetItem *pItem = item(i, j);
-                pItem->setBackgroundColor(Qt::lightGray);
+                pItem->setBackgroundColor(lightLightGray);
             }
         }
     }
@@ -212,7 +241,7 @@ void CDTableWidget::contextMenuEvent(QContextMenuEvent *e)
 
 void CDTableWidget::paintEvent(QPaintEvent *e)
 {
-    slotResizeTable();
+//    slotResizeTable();
 
     QTableWidget::paintEvent(e);
 }

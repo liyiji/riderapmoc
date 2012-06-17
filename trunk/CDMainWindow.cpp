@@ -24,11 +24,6 @@ void CDMainWindow::initUi()
     ui->lineEdit->clear();
     ui->lineEdit_2->clear();
 
-    ui->pushButton_2->setEnabled(false);
-    ui->pushButton_4->setEnabled(false);
-
-    ui->pushButton->setEnabled(false);
-
     ui->label_3->setVisible(false);
     ui->label_4->setVisible(false);
 
@@ -37,7 +32,6 @@ void CDMainWindow::initUi()
     {
         ui->lineEdit->setText("D:\\SkyDrive");
         ui->lineEdit_2->setText("G:\\Ftp.Folder.For.Xlight");
-        ui->pushButton->setEnabled(true);
     }
 }
 
@@ -104,6 +98,11 @@ void CDMainWindow::slotChangeDir2()
 
 void CDMainWindow::slotStartCompare()
 {
+    if (ui->lineEdit->text().isEmpty() || ui->lineEdit_2->text().isEmpty())
+    {
+        return;
+    }
+
     ui->label_3->setVisible(true);
     ui->label_4->setVisible(false);
     qApp->processEvents();
@@ -146,6 +145,10 @@ void CDMainWindow::slotCdDir2SubDir(QString subDirName)
 
 void CDMainWindow::slotCdDir1ParentDir()
 {
+    if (ui->lineEdit->text().isEmpty())
+    {
+        return;
+    }
     QDir dir(ui->lineEdit->text());
     dir.cdUp();
     ui->lineEdit->setText(dir.absolutePath());
@@ -154,6 +157,10 @@ void CDMainWindow::slotCdDir1ParentDir()
 
 void CDMainWindow::slotCdDir2ParentDir()
 {
+    if (ui->lineEdit_2->text().isEmpty())
+    {
+        return;
+    }
     QDir dir(ui->lineEdit_2->text());
     dir.cdUp();
     ui->lineEdit_2->setText(dir.absolutePath());
