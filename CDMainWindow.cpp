@@ -3,6 +3,7 @@
 #include "ui_CDMainWindow.h"
 
 #include <QFileDialog>
+#include <QProcess>
 
 CDMainWindow::CDMainWindow(QWidget *parent) :
         QDialog(parent),
@@ -45,6 +46,9 @@ void CDMainWindow::initConnections()
 
     connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(slotCdDir1ParentDir()));
     connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(slotCdDir2ParentDir()));
+
+    connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(slotOpenDir1()));
+    connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(slotOpenDir2()));
 }
 
 void CDMainWindow::slotChangeDir1()
@@ -164,4 +168,30 @@ void CDMainWindow::slotCdDir2ParentDir()
     dir.cdUp();
     ui->lineEdit_2->setText(dir.absolutePath());
     ui->tableWidget_2->setAllItemTextColorToGray();
+}
+
+void CDMainWindow::slotOpenDir1()
+{
+    QDir dir(ui->lineEdit->text());
+    if (dir.exists())
+    {
+#ifdef WIN32
+        QString path = ui->lineEdit->text();
+        path.replace("/","\\");
+        QProcess::startDetached("explorer " + path);
+#endif
+    }
+}
+
+void CDMainWindow::slotOpenDir2()
+{
+    QDir dir(ui->lineEdit_2->text());
+    if (dir.exists())
+    {
+#ifdef WIN32
+        QString path = ui->lineEdit_2->text();
+        path.replace("/","\\");
+        QProcess::startDetached("explorer " + path);
+#endif
+    }
 }

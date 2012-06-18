@@ -30,6 +30,8 @@ private slots:
     void slotCdDir2SubDir(QString subDirName);
     void slotCdDir1ParentDir();
     void slotCdDir2ParentDir();
+    void slotOpenDir1();
+    void slotOpenDir2();
 
 private:
     Ui::CDMainWindow *ui;
