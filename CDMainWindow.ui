@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>800</height>
+    <width>800</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,6 +42,13 @@
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>Open Folder</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_2">
        <property name="text">
         <string>Parent Folder</string>
@@ -60,13 +67,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_3">
-       <property name="text">
-        <string>Open Folder</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
@@ -101,6 +101,13 @@
    <item row="4" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
+      <widget class="QPushButton" name="pushButton_5">
+       <property name="text">
+        <string>Open Folder</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_4">
        <property name="text">
         <string>Parent Folder</string>
@@ -119,13 +126,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_5">
-       <property name="text">
-        <string>Open Folder</string>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
