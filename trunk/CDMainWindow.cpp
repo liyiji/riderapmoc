@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QProcess>
+#include <QScrollBar>
 
 CDMainWindow::CDMainWindow(QWidget *parent) :
         QDialog(parent),
@@ -27,7 +28,7 @@ void CDMainWindow::initUi()
     ui->label_3->setVisible(false);
     ui->label_4->setVisible(false);
 
-    bool bDebug = true;
+    bool bDebug = false;
     if (bDebug)
     {
         ui->lineEdit->setText("D:\\SkyDrive");
@@ -49,6 +50,15 @@ void CDMainWindow::initConnections()
 
     connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(slotOpenDir1()));
     connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(slotOpenDir2()));
+
+    connect(ui->pushButton_6, SIGNAL(clicked()), ui->tableWidget, SLOT(slotResizeTable()));
+    connect(ui->pushButton_6, SIGNAL(clicked()), ui->tableWidget_2, SLOT(slotResizeTable()));
+
+    connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(slotSyncScroll(bool)));
+    ui->checkBox->setChecked(true);
+
+    connect(ui->checkBox_2, SIGNAL(toggled(bool)), this, SLOT(slotSyncSelection(bool)));
+    ui->checkBox_2->setChecked(true);
 }
 
 void CDMainWindow::slotChangeDir1()
@@ -193,5 +203,41 @@ void CDMainWindow::slotOpenDir2()
         path.replace("/","\\");
         QProcess::startDetached("explorer " + path);
 #endif
+    }
+}
+
+void CDMainWindow::slotSyncScroll(bool b)
+{
+    if (b)
+    {
+        connect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)),
+                ui->tableWidget_2->verticalScrollBar(), SLOT(setValue(int)));
+        connect(ui->tableWidget_2->verticalScrollBar(), SIGNAL(valueChanged(int)),
+                ui->tableWidget->verticalScrollBar(), SLOT(setValue(int)));
+    }
+    else
+    {
+        disconnect(ui->tableWidget->verticalScrollBar(), SIGNAL(valueChanged(int)),
+                   ui->tableWidget_2->verticalScrollBar(), SLOT(setValue(int)));
+        disconnect(ui->tableWidget_2->verticalScrollBar(), SIGNAL(valueChanged(int)),
+                   ui->tableWidget->verticalScrollBar(), SLOT(setValue(int)));
+    }
+}
+
+void CDMainWindow::slotSyncSelection(bool b)
+{
+    if (b)
+    {
+        connect(ui->tableWidget, SIGNAL(itemSelectionChanged(int, int)),
+                ui->tableWidget_2, SLOT(slotSelectItem(int,int)));
+        connect(ui->tableWidget_2, SIGNAL(itemSelectionChanged(int, int)),
+                ui->tableWidget, SLOT(slotSelectItem(int,int)));
+    }
+    else
+    {
+        disconnect(ui->tableWidget, SIGNAL(itemSelectionChanged(int, int)),
+                   ui->tableWidget_2, SLOT(slotSelectItem(int,int)));
+        disconnect(ui->tableWidget_2, SIGNAL(itemSelectionChanged(int, int)),
+                   ui->tableWidget, SLOT(slotSelectItem(int,int)));
     }
 }

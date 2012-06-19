@@ -1,9 +1,12 @@
+
 #ifndef CDMAINWINDOW_H
 #define CDMAINWINDOW_H
 
 #include <QDialog>
 
 #include "CDPublic.h"
+
+class QTableWidgetItem;
 
 namespace Ui {
     class CDMainWindow;
@@ -32,6 +35,9 @@ private slots:
     void slotCdDir2ParentDir();
     void slotOpenDir1();
     void slotOpenDir2();
+
+    void slotSyncScroll(bool b);
+    void slotSyncSelection(bool b);
 
 private:
     Ui::CDMainWindow *ui;
