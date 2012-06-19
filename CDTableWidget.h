@@ -1,3 +1,4 @@
+
 #ifndef CDTABLEWIDGET_H
 #define CDTABLEWIDGET_H
 
@@ -16,6 +17,8 @@ public:
 
 signals:
     void cdToSubDir(QString subDirName);
+    void verticalScrollBarMoved(int pos);
+    void itemSelectionChanged(int iRow, int iColumn);
 
 public:
     void showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalList);
@@ -25,6 +28,7 @@ public:
 public slots:
     void slotResizeTable();
     void slotSetDifferentBackgroundColorBetweenNearRow();
+    void slotSelectItem(int iRow, int iColumn = 0);
 
 private:
     void initConnections();
@@ -35,6 +39,7 @@ private:
 
 private slots:
     void slotEmitCdToSubDirOfCurrentItem();
+    void slotItemSelectionChanged();
 
 private:
     static const QStringList m_slHeaderLabels;

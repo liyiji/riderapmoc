@@ -5,6 +5,7 @@
 #include <QContextMenuEvent>
 #include <QHeaderView>
 #include <QMenu>
+#include <QScrollBar>
 
 /**
   Folder / File     /// 文件夹 / 文件
@@ -158,13 +159,18 @@ void CDTableWidget::setAllItemTextColor(QColor c)
         for (int j = 0; j < columnCount(); j++)
         {
             QTableWidgetItem *pItem = item(i, j);
-            pItem->setTextColor(c);
+            if (pItem)
+            {
+                pItem->setTextColor(c);
+            }
         }
     }
 }
 
 void CDTableWidget::slotResizeTable()
 {
+    int pos = verticalScrollBar()->value();
+
     /// 先调整宽度
     QVector<int> widths;
     widths.resize(m_slHeaderLabels.size());
@@ -193,7 +199,8 @@ void CDTableWidget::slotResizeTable()
 
     /// 最后设定显示的范围
     setCurrentItem(item(-1, -1));
-    scrollToTop();
+
+    verticalScrollBar()->setValue(pos);
 }
 
 void CDTableWidget::slotSetDifferentBackgroundColorBetweenNearRow()
@@ -206,14 +213,24 @@ void CDTableWidget::slotSetDifferentBackgroundColorBetweenNearRow()
             for (int j = 0; j < columnCount(); j++)
             {
                 QTableWidgetItem *pItem = item(i, j);
-                pItem->setBackgroundColor(lightLightGray);
+                if (pItem)
+                {
+                    pItem->setBackgroundColor(lightLightGray);
+                }
             }
         }
     }
 }
 
+void CDTableWidget::slotSelectItem(int iRow, int iColumn)
+{
+    setCurrentItem(item(iRow, iColumn));
+}
+
 void CDTableWidget::initConnections()
 {
+    connect(this, SIGNAL(itemSelectionChanged()),
+            this, SLOT(slotItemSelectionChanged()));
 }
 
 void CDTableWidget::contextMenuEvent(QContextMenuEvent *e)
@@ -241,8 +258,7 @@ void CDTableWidget::contextMenuEvent(QContextMenuEvent *e)
 
 void CDTableWidget::paintEvent(QPaintEvent *e)
 {
-//    slotResizeTable();
-
+    /// 不能轻易往这里添加东西啊，否则可能会出问题哦
     QTableWidget::paintEvent(e);
 }
 
@@ -275,5 +291,14 @@ void CDTableWidget::slotEmitCdToSubDirOfCurrentItem()
     if (pItem)
     {
         ChangeIntoSubDirByItem(pItem);
+    }
+}
+
+void CDTableWidget::slotItemSelectionChanged()
+{
+    QTableWidgetItem *pItem = currentItem();
+    if (pItem)
+    {
+        emit itemSelectionChanged(pItem->row(), pItem->column());
     }
 }
