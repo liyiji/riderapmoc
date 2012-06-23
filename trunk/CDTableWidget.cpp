@@ -198,6 +198,7 @@ void CDTableWidget::slotResizeTable()
     resizeRowsToContents();
 
     /// 最后设定显示的范围
+    setCurrentItem(item(0, 0));
     setCurrentItem(item(-1, -1));
 
     verticalScrollBar()->setValue(pos);
