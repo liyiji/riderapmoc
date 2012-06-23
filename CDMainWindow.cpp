@@ -28,6 +28,18 @@ void CDMainWindow::initUi()
     ui->label_3->setVisible(false);
     ui->label_4->setVisible(false);
 
+    ui->comboBox_3->addItem("D:\\CacheData");
+    ui->comboBox_3->addItem("E:\\Data1");
+    ui->comboBox_3->addItem("F:\\Data2");
+    ui->comboBox_4->addItem("L:\\Backup-2012-06-08-CacheData");
+    ui->comboBox_4->addItem("K:\\Backup-2012-06-08-Data1");
+    ui->comboBox_4->addItem("L:\\Backup-2012-06-08-Data2");
+
+    ui->comboBox->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    ui->comboBox_2->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    ui->comboBox_3->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+    ui->comboBox_4->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+
     bool bDebug = false;
     if (bDebug)
     {
@@ -38,8 +50,8 @@ void CDMainWindow::initUi()
 
 void CDMainWindow::initConnections()
 {
-    connect(ui->toolButton, SIGNAL(clicked()), this, SLOT(slotChangeDir1()));
-    connect(ui->toolButton_2, SIGNAL(clicked()), this, SLOT(slotChangeDir2()));
+    connect(ui->pushButton_7, SIGNAL(clicked()), this, SLOT(slotChangeDir1()));
+    connect(ui->pushButton_8, SIGNAL(clicked()), this, SLOT(slotChangeDir2()));
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(slotStartCompare()));
 
     connect(ui->tableWidget, SIGNAL(cdToSubDir(QString)), this, SLOT(slotCdDir1SubDir(QString)));
@@ -54,11 +66,32 @@ void CDMainWindow::initConnections()
     connect(ui->pushButton_6, SIGNAL(clicked()), ui->tableWidget, SLOT(slotResizeTable()));
     connect(ui->pushButton_6, SIGNAL(clicked()), ui->tableWidget_2, SLOT(slotResizeTable()));
 
+    connect(ui->pushButton_9, SIGNAL(clicked()), this, SLOT(slotCdDir1SubDir()));
+    connect(ui->pushButton_10, SIGNAL(clicked()), this, SLOT(slotCdDir2SubDir()));
+
+    connect(ui->lineEdit, SIGNAL(textChanged(QString)), this, SLOT(slotUpdateDir1SubDirNames(QString)));
+    connect(ui->lineEdit_2, SIGNAL(textChanged(QString)), this, SLOT(slotUpdateDir2SubDirNames(QString)));
+
+    connect(ui->pushButton_11, SIGNAL(clicked()), this, SLOT(slotCdCommonDirToDir1()));
+    connect(ui->pushButton_12, SIGNAL(clicked()), this, SLOT(slotCdCommonDirToDir2()));
+
     connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(slotSyncScroll(bool)));
     ui->checkBox->setChecked(true);
 
     connect(ui->checkBox_2, SIGNAL(toggled(bool)), this, SLOT(slotSyncSelection(bool)));
     ui->checkBox_2->setChecked(true);
+}
+
+QStringList CDMainWindow::getSubDirNames(QString dirName)
+{
+    QStringList subDirNames;
+    QDir dir(dirName);
+    if (dir.exists())
+    {
+        subDirNames = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name);
+    }
+
+    return subDirNames;
 }
 
 void CDMainWindow::slotChangeDir1()
@@ -132,6 +165,24 @@ void CDMainWindow::slotStartCompare()
     ui->label_4->setVisible(true);
 }
 
+void CDMainWindow::slotCdDir1SubDir()
+{
+    QString subDirName = ui->comboBox->currentText();
+    if (subDirName.isEmpty() == false)
+    {
+        slotCdDir1SubDir(subDirName);
+    }
+}
+
+void CDMainWindow::slotCdDir2SubDir()
+{
+    QString subDirName = ui->comboBox_2->currentText();
+    if (subDirName.isEmpty() == false)
+    {
+        slotCdDir2SubDir(subDirName);
+    }
+}
+
 void CDMainWindow::slotCdDir1SubDir(QString subDirName)
 {
     QString dir1Name = ui->lineEdit->text();
@@ -203,6 +254,38 @@ void CDMainWindow::slotOpenDir2()
         path.replace("/","\\");
         QProcess::startDetached("explorer " + path);
 #endif
+    }
+}
+
+void CDMainWindow::slotUpdateDir1SubDirNames(QString dir1NewName)
+{
+    ui->comboBox->clear();
+    ui->comboBox->addItems(getSubDirNames(dir1NewName));
+}
+
+void CDMainWindow::slotUpdateDir2SubDirNames(QString dir2NewName)
+{
+    ui->comboBox_2->clear();
+    ui->comboBox_2->addItems(getSubDirNames(dir2NewName));
+}
+
+void CDMainWindow::slotCdCommonDirToDir1()
+{
+    QString commonDir = ui->comboBox_3->currentText();
+    QDir dir(commonDir);
+    if (dir.exists())
+    {
+        ui->lineEdit->setText(commonDir);
+    }
+}
+
+void CDMainWindow::slotCdCommonDirToDir2()
+{
+    QString commonDir = ui->comboBox_4->currentText();
+    QDir dir(commonDir);
+    if (dir.exists())
+    {
+        ui->lineEdit_2->setText(commonDir);
     }
 }
 
