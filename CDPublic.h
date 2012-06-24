@@ -13,9 +13,10 @@ enum EntryType
 
 enum UnequalType
 {
+    ONLY_IN_DIR_1 = 1,
+    ONLY_IN_DIR_2 = 2,
     SIZE_UNEQUAL,
-    ONLY_IN_DIR_1,
-    ONLY_IN_DIR_2
+    DETAIL_DIFFERENT
 };
 
 struct Unequal
