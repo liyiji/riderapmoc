@@ -2,12 +2,20 @@
 SOURCES += compareDir.cpp \
     CDMainWindow.cpp \
     CDPublic.cpp \
-    CDTableWidget.cpp
+    CDTableWidget.cpp \
+    CDMainWindowNew.cpp
 
 HEADERS += \
     CDMainWindow.h \
     CDPublic.h \
-    CDTableWidget.h
+    CDTableWidget.h \
+    CDMainWindowNew.h \
+    CDToDo.h
 
 FORMS += \
-    CDMainWindow.ui
+    CDMainWindow.ui \
+    CDMainWindowNew.ui
+
+
+
+
