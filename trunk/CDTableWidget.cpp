@@ -99,6 +99,11 @@ void CDTableWidget::showUnequals(int showAsDir_1_Or_2, QList<Unequal> unequalLis
             pItem[1]->setText("Different Size");
             pItem[1]->setTextColor(Qt::darkYellow);
         }
+        else if (ueq.m_eUnequalType == DETAIL_DIFFERENT)
+        {
+            pItem[1]->setText("Detail Different");
+            pItem[1]->setTextColor(Qt::darkYellow);
+        }
         else
         {
             if (showAsDir_1_Or_2 == ueq.m_eUnequalType)
@@ -199,7 +204,9 @@ void CDTableWidget::slotResizeTable()
 
     /// 最后设定显示的范围
     setCurrentItem(item(0, 0));
-    setCurrentItem(item(-1, -1));
+//    setCurrentItem(0);
+//    setSelectionMode(QAbstractItemView::NoSelection);
+//    setSelectionMode(QAbstractItemView::SingleSelection);
 
     verticalScrollBar()->setValue(pos);
 }

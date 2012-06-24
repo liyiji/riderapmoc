@@ -94,6 +94,26 @@ bool compareDir(QString strDir1, QString strDir2,
 
             unequalList.append(ueq);
         }
+        else
+        {
+            QList<Unequal> subUnequalList;
+            compareDir(strDir1 + QDir::separator() + dirCommon[i],
+                       strDir2 + QDir::separator() + dirCommon[i],
+                       subUnequalList);
+            if (subUnequalList.size())
+            {
+                Unequal ueq;
+                ueq.m_sDir1 = dir1.absolutePath();
+                ueq.m_sDir2 = dir2.absolutePath();
+                ueq.m_sFileOrDirName = dirCommon[i];
+                ueq.m_eEntryType = FOLDERS;
+                ueq.m_eUnequalType = DETAIL_DIFFERENT;
+                ueq.m_iSize1 = dirSize1;
+                ueq.m_iSize2 = dirSize2;
+
+                unequalList.append(ueq);
+            }
+        }
     }
 
     QStringList fileList1 = dir1.entryList(QDir::Files | QDir::NoDotAndDotDot,
