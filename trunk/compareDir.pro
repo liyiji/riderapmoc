@@ -14,8 +14,7 @@ HEADERS += \
 
 FORMS += \
     CDMainWindow.ui \
-    CDMainWindowNew.ui
+    CDMainWindowNew.ui\
 
-
-
-
+RC_FILE += \
+    compareDir.rc
