@@ -1,6 +1,8 @@
 
 #include "CDPublic.h"
 
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QString>
 
 void debugUnequal(Unequal ueq)
@@ -334,4 +336,12 @@ QString getScientificNotationOfQInt64(qint64 num)
 
     QString final = stl.join(",");
     return final;
+}
+
+void calcLeftTopCornerOfWindow(int width, int height, int &xPos, int &yPos)
+{
+    int maxWidth = QApplication::desktop()->width();
+    int maxHeight = QApplication::desktop()->height();
+    xPos = (maxWidth - width) / 2;
+    yPos = (maxHeight - height) / 2;
 }

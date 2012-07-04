@@ -45,4 +45,6 @@ void separateDiffences(QStringList stl1, QStringList stl2,
 
 QString getScientificNotationOfQInt64(qint64 num);
 
+void calcLeftTopCornerOfWindow(int width, int height, int &xPos, int &yPos);
+
 #endif // CDPUBLIC_H

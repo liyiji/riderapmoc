@@ -13,6 +13,10 @@ CDMainWindowNew::CDMainWindowNew(QWidget *parent) :
     ui->setupUi(this);
     initUi();
     initConnections();
+
+    int xPos, yPos;
+    calcLeftTopCornerOfWindow(width(), height(), xPos, yPos);
+    move(xPos, yPos);
 }
 
 CDMainWindowNew::~CDMainWindowNew()
