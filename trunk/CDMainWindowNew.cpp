@@ -29,8 +29,7 @@ void CDMainWindowNew::initUi()
     ui->lineEdit->clear();
     ui->lineEdit_2->clear();
 
-    ui->label_3->setVisible(false);
-    ui->label_4->setVisible(false);
+    ui->statusbar->showMessage("");
 
     ui->comboBox_3->addItem("D:\\CacheData");
     ui->comboBox_3->addItem("E:\\Data1");
@@ -77,7 +76,7 @@ void CDMainWindowNew::initConnections()
     connect(ui->lineEdit_2, SIGNAL(textChanged(QString)), this, SLOT(slotUpdateDir2SubDirNames(QString)));
 
     connect(ui->pushButton_11, SIGNAL(clicked()), this, SLOT(slotCdCommonDirToDir1()));
-    connect(ui->pushButton_12, SIGNAL(clicked()), this, SLOT(slotCdCommonDirToDir2()));
+    connect(ui->pushButton_11, SIGNAL(clicked()), this, SLOT(slotCdCommonDirToDir2()));
 
     connect(ui->checkBox, SIGNAL(toggled(bool)), this, SLOT(slotSyncScroll(bool)));
     ui->checkBox->setChecked(true);
@@ -153,9 +152,8 @@ void CDMainWindowNew::slotStartCompare()
         return;
     }
 
-    ui->label_3->setVisible(true);
-    ui->label_4->setVisible(false);
-    qApp->processEvents();
+    ui->statusbar->showMessage("Comparing......");
+//    qApp->processEvents();
 
     QList<Unequal> unequalList;
     bool b = compareDir(ui->lineEdit->text(), ui->lineEdit_2->text(), unequalList);
@@ -165,8 +163,7 @@ void CDMainWindowNew::slotStartCompare()
         ui->tableWidget_2->showUnequals(2, unequalList);
     }
 
-    ui->label_3->setVisible(false);
-    ui->label_4->setVisible(true);
+    ui->statusbar->showMessage("Finished!");
 }
 
 void CDMainWindowNew::slotCdDir1SubDir()
